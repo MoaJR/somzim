@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+
 import Header from '../Components/Header';
 import Loading from '../Components/Loading';
 import MusicCard from '../Components/MusicCard';
 import { getFavoriteSongs } from '../services/favoriteSongsAPI';
 import getMusics from '../services/musicsAPI';
+
+import '../styles/Album.scss';
 
 function Album() {
   const { id } = useParams();
@@ -53,33 +56,38 @@ function Album() {
   }, [album]);
 
   return (
-    <div data-testid="page-album">
+    <div
+      data-testid="page-album"
+      className="albumBox"
+    >
       <Header />
-
-      {album.length === 0 ? (
-        <Loading />
-      ) : (
-        <div>
-          <h1>Álbum</h1>
-          <br />
-          <img
-            src={ album[0].artworkUrl100 }
-            alt={ album[0].title }
-          />
-          <h2 data-testid="album-name">{album[0].collectionName}</h2>
-          <h3 data-testid="artist-name">{album[0].artistName}</h3>
-          <ul>
-            {album.slice(1).map((music) => (
-              <li key={ music.trackId }>
-                <MusicCard
-                  music={ music }
-                  isFavorite={ handleFavorites(music) }
-                />
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      <div className="pageAlbumBox">
+        {album.length === 0 ? (
+          <Loading />
+        ) : (
+          <div className="contentBox">
+            <h1 className="title">Álbum</h1>
+            <br />
+            <img
+              src={ album[0].artworkUrl100 }
+              alt={ album[0].title }
+            />
+            <h2 data-testid="album-name">{album[0].collectionName}</h2>
+            <h3 className="title" data-testid="artist-name">{album[0].artistName}</h3>
+            <ul>
+              {album.slice(1).map((music) => (
+                <li key={ music.trackId }>
+                  <MusicCard
+                    music={ music }
+                    isFavorite={ handleFavorites(music) }
+                    artwork={ false }
+                  />
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -1,0 +1,30 @@
+.favoritesBox {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  &::after {
+    content: "";
+    position: fixed;
+    top:0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: var(--gradient);
+    z-index: -10;
+  }
+}
+
+.favoritesUl {
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 90%;
+  height: 100%;
+  flex-wrap: wrap;
+  gap: 1rem;
+  li {
+    list-style: none;
+  }
+}

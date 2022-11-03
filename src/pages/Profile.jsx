@@ -5,6 +5,8 @@ import Header from '../Components/Header';
 import Loading from '../Components/Loading';
 import { getUser } from '../services/userAPI';
 
+import '../styles/Profile.scss';
+
 function Profile() {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(false);
@@ -23,27 +25,34 @@ function Profile() {
   }, []);
 
   return (
-    <div data-testid="page-profile">
+    <div data-testid="page-profile" className="profileBox">
       <Header />
-      {loading ? <Loading /> : (
-        <div>
-          <img
-            data-testid="profile-image"
-            src={ user.image }
-            alt={ user.name }
-            width={ 200 }
-          />
-          <h2 data-testid="profile-name">{user.name}</h2>
-          <h4 data-testid="profile-email">{user.email}</h4>
-          <p>{user.description}</p>
-          <button
-            type="button"
-            onClick={ () => history.push('/profile/edit') }
-          >
-            Editar perfil
-          </button>
-        </div>
-      )}
+      <div className="pageProfileBox">
+        {loading ? <Loading /> : (
+          <div className="profileCOntent">
+            {
+              user.image ? (
+                <img
+                  data-testid="profile-image"
+                  src={ user.image }
+                  alt={ user.name }
+                  width={ 200 }
+                />
+              ) : null
+            }
+            <button
+              className="button"
+              type="button"
+              onClick={ () => history.push('/profile/edit') }
+            >
+              Editar perfil
+            </button>
+            <h2 data-testid="profile-name">{user.name}</h2>
+            <h4 data-testid="profile-email">{user.email}</h4>
+            <p>{user.description}</p>
+          </div>
+        )}
+      </div>
     </div>
   );
 }

@@ -4,6 +4,8 @@ import Header from '../Components/Header';
 import Loading from '../Components/Loading';
 import { getUser, updateUser } from '../services/userAPI';
 
+import '../styles/PageProfileEdit.scss';
+
 function ProfileEdit() {
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(false);
@@ -56,12 +58,12 @@ function ProfileEdit() {
   };
 
   return (
-    <div data-testid="page-profile-edit">
+    <div data-testid="page-profile-edit" className="profileEditBox">
       <Header />
-      <div>
+      <div className="pageProfileEditBox">
         {
           loading ? <Loading /> : (
-            <form>
+            <form className="formEdit">
               <label htmlFor="name">
                 Nome
                 <input
@@ -87,10 +89,11 @@ function ProfileEdit() {
               </label>
               <label htmlFor="description">
                 Descrição
-                <textarea
+                <input
                   id="description"
                   name="description"
                   data-testid="edit-input-description"
+                  type="text"
                   value={ user.description }
                   onChange={ handleInputChange }
                 />
@@ -107,6 +110,7 @@ function ProfileEdit() {
                 />
               </label>
               <button
+                className="button"
                 type="button"
                 data-testid="edit-button-save"
                 onClick={ handleSubmit }

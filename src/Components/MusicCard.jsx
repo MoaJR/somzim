@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { addSong, removeSong } from '../services/favoriteSongsAPI';
 
-function MusicCard({ music, isFavorite, deleted = function () {} }) {
+import '../styles/MusicCard.scss';
+import Loading from './Loading';
+
+function MusicCard({ music, isFavorite, deleted = function () {}, artwork }) {
   const [loading, setLoading] = useState(false);
   const [favorite, setFavorite] = useState(isFavorite);
 
@@ -28,23 +31,40 @@ function MusicCard({ music, isFavorite, deleted = function () {} }) {
   };
 
   return (
-    <div>
+    <div className="musicBox">
+      {
+        artwork ? (
+          <img
+            src={ music.artworkUrl100 }
+            alt={ music.trackName }
+          />
+        ) : null
+      }
       <h4>{music.trackName}</h4>
-      <audio controls data-testid="audio-component">
+      {
+        artwork ? (
+          <h5>{music.artistName}</h5>
+        ) : null
+      }
+      <audio
+        controls
+        data-testid="audio-component"
+      >
         <track kind="captions" />
-        <source src={ music.previewUrl } type="audio/mpeg" />
-      </audio>
-      <label htmlFor="favorite">
-        Favorita
-        <input
-          data-testid={ `checkbox-music-${music.trackId}` }
-          id="favorite"
-          type="checkbox"
-          onChange={ handleAddSong }
-          checked={ favorite }
+        <source
+          src={ music.previewUrl }
+          type="audio/mpeg"
         />
-      </label>
-      {loading && <p>Carregando...</p>}
+      </audio>
+      <input
+        style={ { marginLeft: '5px' } }
+        data-testid={ `checkbox-music-${music.trackId}` }
+        id="favorite"
+        type="checkbox"
+        onChange={ handleAddSong }
+        checked={ favorite }
+      />
+      {loading && <Loading />}
     </div>
   );
 }
@@ -54,9 +74,12 @@ MusicCard.propTypes = {
     trackId: PropTypes.string,
     trackName: PropTypes.string,
     previewUrl: PropTypes.string,
+    artistName: PropTypes.string,
+    artworkUrl100: PropTypes.string,
   }).isRequired,
   isFavorite: PropTypes.bool.isRequired,
   deleted: PropTypes.func.isRequired,
+  artwork: PropTypes.string.isRequired,
 };
 
 export default MusicCard;

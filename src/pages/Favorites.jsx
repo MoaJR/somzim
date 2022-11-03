@@ -5,6 +5,8 @@ import Loading from '../Components/Loading';
 import MusicCard from '../Components/MusicCard';
 import { getFavoriteSongs } from '../services/favoriteSongsAPI';
 
+import '../styles/Favorites.scss';
+
 function Favorites() {
   const [loading, setLoading] = useState(false);
   const [favoriteSongs, setFavoriteSongs] = useState([]);
@@ -49,14 +51,13 @@ function Favorites() {
   }, [favoriteSongs]);
 
   return (
-    <div data-testid="page-favorites">
+    <div data-testid="page-favorites" className="favoritesBox">
       <Header />
-      <div>
-        <h1>Favorites</h1>
-        <br />
+      <div className="pageBox">
+        <h1 className="title">Favorites</h1>
         {
           loading ? <Loading /> : (
-            <ul>
+            <ul className="favoritesUl">
               {favoriteSongs.map((music) => (
                 <li key={ music.trackId }>
                   <MusicCard
@@ -64,6 +65,7 @@ function Favorites() {
                     isFavorite={ handleFavorites(music) }
                     deleted={ setDeleted }
                     setFavoriteSongs={ setFavoriteSongs }
+                    artwork
                   />
                 </li>
               ))}

@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom';
 import Loading from '../Components/Loading';
 import { createUser } from '../services/userAPI';
 
+import '../styles/Login.scss';
+
 function Login() {
   const [userName, setUserName] = useState({});
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
@@ -29,23 +31,27 @@ function Login() {
   };
 
   return (
-    <div data-testid="page-login">
-      <h1>Login</h1>
-      {loading ? <Loading /> : null}
-      <input
-        data-testid="login-name-input"
-        type="text"
-        onChange={ inputChange }
-        ref={ inputRef }
-      />
-      <button
-        type="button"
-        data-testid="login-submit-button"
-        disabled={ isButtonDisabled }
-        onClick={ handleButtonSubmit }
-      >
-        Entrar
-      </button>
+    <div data-testid="page-login" className="container">
+      <div className="contentGlass">
+        <h1 className="title">Login</h1>
+        {loading ? <Loading /> : null}
+        <input
+          className="input"
+          data-testid="login-name-input"
+          type="text"
+          onChange={ inputChange }
+          ref={ inputRef }
+        />
+        <button
+          className="button"
+          type="button"
+          data-testid="login-submit-button"
+          disabled={ isButtonDisabled }
+          onClick={ handleButtonSubmit }
+        >
+          Entrar
+        </button>
+      </div>
     </div>
   );
 }

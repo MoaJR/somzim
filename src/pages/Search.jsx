@@ -1,9 +1,13 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import Header from '../Components/Header';
 import Loading from '../Components/Loading';
 import searchAlbumsAPI from '../services/searchAlbumsAPI';
+
+import '../styles/Search.scss';
 
 function Search() {
   const [search, setSearch] = useState('');
@@ -13,6 +17,8 @@ function Search() {
   const [status, setStatus] = useState(false);
 
   const inputRef = useRef();
+
+  const history = useHistory();
 
   const inputChange = ({ target }) => {
     setResponse([]);
@@ -35,10 +41,18 @@ function Search() {
 
   const handleSearchResultRender = () => {
     if (status === false) return null;
-    if (response.length === 0 && status) return <h2>Nenhum álbum foi encontrado</h2>;
+    if (response.length === 0 && status) {
+      return (
+        <h2
+          style={ { textAlign: 'center', margin: '2rem 0' } }
+        >
+          Nenhum álbum foi encontrado
+        </h2>
+      );
+    }
     if (response.length > 0 && status) {
       return (
-        <h2>
+        <h2 style={ { textAlign: 'center', margin: '2rem 0' } }>
           Resultado de álbuns de:
           {' '}
           {search}
@@ -48,12 +62,12 @@ function Search() {
   };
 
   return (
-    <div data-testid="page-search">
+    <div data-testid="page-search" className="searchBox">
       <Header />
-      <div>
-        <h1>Pesquisar</h1>
-        <br />
+      <div className="pageBox">
+        <h1 className="title">Pesquisar</h1>
         <input
+          className="input"
           data-testid="search-artist-input"
           type="text"
           onChange={ inputChange }
@@ -61,6 +75,7 @@ function Search() {
           placeholder="Álbum ou Artista"
         />
         <button
+          className="button"
           type="button"
           data-testid="search-artist-button"
           onClick={ handleButtonSearch }
@@ -73,23 +88,26 @@ function Search() {
         {
           handleSearchResultRender()
         }
-        {
-          loading ? <Loading /> : (
-            response.map((album) => (
-              <div key={ album.collectionId }>
-                <Link
-                  to={ `/album/${album.collectionId}` }
-                  data-testid={ `link-to-album-${album.collectionId}` }
+        <div className="albumBox">
+          {
+            loading ? <Loading /> : (
+              response.map((album) => (
+                <div
+                  style={ { cursor: 'pointer' } }
+                  key={ album.collectionId }
+                  className="cardBox"
+                  onClick={ () => history.push(`/album/${album.collectionId}`) }
                 >
-                  Link
-                </Link>
-                <img src={ album.artworkUrl100 } alt={ album.title } />
-                <h2>{album.artistName}</h2>
-                <h3>{album.collectionName}</h3>
-              </div>
-            ))
-          )
-        }
+                  <img src={ album.artworkUrl100 } alt={ album.title } />
+                  <h2 style={ { textAlign: 'center' } }>{album.artistName}</h2>
+                  <h3 style={ { textAlign: 'center' } }>
+                    {album.collectionName}
+                  </h3>
+                </div>
+              ))
+            )
+          }
+        </div>
       </div>
     </div>
   );
